@@ -1,22 +1,24 @@
 package com.gmail.val59000mc.maploader;
 
-import com.gmail.val59000mc.UhcCore;
-import com.gmail.val59000mc.game.GameManager;
-import com.gmail.val59000mc.game.UhcWorldBorder;
-import com.gmail.val59000mc.utils.FileUtils;
-import com.gmail.val59000mc.configuration.YamlFile;
-import org.bukkit.Bukkit;
-import org.bukkit.World;
-import org.bukkit.World.Environment;
-import org.bukkit.WorldCreator;
-import org.bukkit.WorldType;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Random;
 import java.util.UUID;
+
+import com.gmail.val59000mc.UhcCore;
+import com.gmail.val59000mc.configuration.YamlFile;
+import com.gmail.val59000mc.game.GameManager;
+import com.gmail.val59000mc.game.UhcWorldBorder;
+import com.gmail.val59000mc.utils.FileUtils;
+
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.bukkit.World;
+import org.bukkit.World.Environment;
+import org.bukkit.WorldCreator;
+import org.bukkit.WorldType;
 
 
 public class MapLoader {
@@ -91,8 +93,10 @@ public class MapLoader {
 		
 		GameManager gm = GameManager.getGameManager();
 		WorldCreator wc = new WorldCreator(worldName);
+		wc.generator("Realistic_World"); // Use realistic world generator
 		wc.generateStructures(true);
 		wc.environment(env);
+		
 		if(env.equals(Environment.NORMAL)){
 			gm.getConfiguration().setOverworldUuid(worldName);
 			if(gm.getConfiguration().getPickRandomSeedFromList() && !gm.getConfiguration().getSeeds().isEmpty()){

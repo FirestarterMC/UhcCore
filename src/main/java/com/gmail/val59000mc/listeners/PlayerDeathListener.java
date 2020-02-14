@@ -60,7 +60,7 @@ public class PlayerDeathListener implements Listener {
 				
 				
 				// eliminations
-				gm.broadcastInfoMessage(Lang.PLAYERS_ELIMINATED.replace("%player%", player.getName()));
+				//gm.broadcastInfoMessage(Lang.PLAYERS_ELIMINATED.replace("%player%", player.getName()));
 
 				if(cfg.getRegenHeadDropOnPlayerDeath()){
 					event.getDrops().add(UhcItems.createRegenHead(player));

@@ -1,7 +1,11 @@
 package com.gmail.val59000mc.listeners;
 
 import com.gmail.val59000mc.UhcCore;
-import com.gmail.val59000mc.customitems.*;
+import com.gmail.val59000mc.customitems.Craft;
+import com.gmail.val59000mc.customitems.CraftsManager;
+import com.gmail.val59000mc.customitems.Kit;
+import com.gmail.val59000mc.customitems.KitsManager;
+import com.gmail.val59000mc.customitems.UhcItems;
 import com.gmail.val59000mc.exceptions.UhcPlayerDoesntExistException;
 import com.gmail.val59000mc.exceptions.UhcPlayerNotOnlineException;
 import com.gmail.val59000mc.exceptions.UhcTeamException;
@@ -13,6 +17,7 @@ import com.gmail.val59000mc.players.PlayersManager;
 import com.gmail.val59000mc.players.UhcPlayer;
 import com.gmail.val59000mc.scenarios.Scenario;
 import com.gmail.val59000mc.scenarios.ScenarioManager;
+
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
@@ -188,12 +193,14 @@ public class ItemsListener implements Listener {
 			
 		}
 		
-		if(event.getView().getTitle().equals(ChatColor.GREEN+Lang.DISPLAY_MESSAGE_PREFIX+" "+ChatColor.DARK_GREEN+Lang.TEAM_INVENTORY)){
+		if(event.getView().getTitle().equals(Lang.TEAM_INVENTORY)){
 			// Click on a player head to join a team
 			if(UhcItems.isLobbyTeamItem(item)){
 				event.setCancelled(true);
 				
-				Player itemPlayer = Bukkit.getPlayer(item.getItemMeta().getDisplayName());
+				System.out.println(ChatColor.stripColor(item.getItemMeta().getDisplayName()).replace("'s Team", ""));
+
+				Player itemPlayer = Bukkit.getPlayer(ChatColor.stripColor(item.getItemMeta().getDisplayName()).replace("'s Team", ""));
 				if(itemPlayer == player){
 					player.sendMessage(ChatColor.RED+Lang.TEAM_CANNOT_JOIN_OWN_TEAM);
 				}else if(itemPlayer != null){

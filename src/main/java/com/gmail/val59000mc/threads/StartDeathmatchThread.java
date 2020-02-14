@@ -34,12 +34,12 @@ public class StartDeathmatchThread implements Runnable{
 				if(timeBeforePVP == 0){
 					listener.unregister();
 					GameManager.getGameManager().setPvp(true);
-					GameManager.getGameManager().broadcastInfoMessage(Lang.PVP_ENABLED);
-					GameManager.getGameManager().getPlayersManager().playSoundToAll(UniversalSound.WITHER_SPAWN);
+					//GameManager.getGameManager().broadcastInfoMessage(Lang.PVP_ENABLED);
+					//GameManager.getGameManager().getPlayersManager().playSoundToAll(UniversalSound.WITHER_SPAWN);
 				}else{
 					
 					if(timeBeforePVP <= 5 || (timeBeforePVP >= 5 && timeBeforePVP%5 == 0)){
-						GameManager.getGameManager().broadcastInfoMessage(Lang.PVP_START_IN+" "+timeBeforePVP+"s");
+						GameManager.getGameManager().broadcastInfoMessage(Lang.PVP_START_IN +" "+timeBeforePVP+"s");
 						GameManager.getGameManager().getPlayersManager().playSoundToAll(UniversalSound.CLICK);
 					}
 					

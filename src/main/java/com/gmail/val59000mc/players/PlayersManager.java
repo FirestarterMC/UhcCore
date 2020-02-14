@@ -187,7 +187,12 @@ public class PlayersManager{
 				if(gm.getConfiguration().getAutoAssignNewPlayerTeam()){
 					autoAssignPlayerToTeam(uhcPlayer);
 				}
-				player.sendMessage(ChatColor.GREEN+ Lang.DISPLAY_MESSAGE_PREFIX+" "+ChatColor.WHITE+ Lang.PLAYERS_WELCOME_NEW);
+
+				// Send title message
+				player.sendTitle(ChatColor.translateAlternateColorCodes('&', "&a&lHey there!"), "Select a team to get going.");
+				player.playSound(player.getLocation(), Sound.NOTE_PLING, 1.0f, 1.0f);
+
+				//player.sendMessage(ChatColor.GREEN+ Lang.DISPLAY_MESSAGE_PREFIX+" "+ChatColor.WHITE+ Lang.PLAYERS_WELCOME_NEW);
 				break;
 			case PLAYING:
 				setPlayerStartPlaying(uhcPlayer);
@@ -205,7 +210,12 @@ public class PlayersManager{
 					player.removePotionEffect(PotionEffectType.BLINDNESS);
 					player.removePotionEffect(PotionEffectType.SLOW_DIGGING);
 				}
-				player.sendMessage(ChatColor.GREEN+ Lang.DISPLAY_MESSAGE_PREFIX+" "+ChatColor.WHITE+ Lang.PLAYERS_WELCOME_BACK_IN_GAME);
+
+				// Send title message
+				player.sendTitle(ChatColor.translateAlternateColorCodes('&', "&a&lWelcome back!"), "It's time to get going again.");
+				player.playSound(player.getLocation(), Sound.NOTE_PLING, 1.0f, 1.0f);
+
+				//player.sendMessage(ChatColor.GREEN+ Lang.DISPLAY_MESSAGE_PREFIX+" "+ChatColor.WHITE+ Lang.PLAYERS_WELCOME_BACK_IN_GAME);
 				break;
 			case DEAD:
 				setPlayerSpectateAtLobby(uhcPlayer);
@@ -304,13 +314,26 @@ public class PlayersManager{
 	public void setPlayerSpectateAtLobby(UhcPlayer uhcPlayer){
 
 		uhcPlayer.setState(PlayerState.DEAD);
-		uhcPlayer.sendMessage(ChatColor.GREEN+ Lang.DISPLAY_MESSAGE_PREFIX
+
+		Player pplayer = null;
+		try {
+			pplayer = uhcPlayer.getPlayer();
+		} catch (UhcPlayerNotOnlineException ex) {
+			ex.printStackTrace();
+		}
+		
+		// Send title message
+		pplayer.sendTitle(ChatColor.translateAlternateColorCodes('&', "&c&lF"), "You are now spectating.");
+		pplayer.playSound(pplayer.getLocation(), Sound.ENDERDRAGON_GROWL, 1.0f, 1.0f);
+
+		/*uhcPlayer.sendMessage(ChatColor.GREEN+ Lang.DISPLAY_MESSAGE_PREFIX
 				+" "
-				+ChatColor.WHITE+ Lang.PLAYERS_WELCOME_BACK_SPECTATING);
-		if(GameManager.getGameManager().getConfiguration().getSpectatingTeleport())
-			uhcPlayer.sendMessage(ChatColor.GREEN+ Lang.DISPLAY_MESSAGE_PREFIX
-					+" "
-					+ChatColor.WHITE+ Lang.COMMAND_SPECTATING_HELP);
+				+ChatColor.WHITE+ Lang.PLAYERS_WELCOME_BACK_SPECTATING);*/
+		if(GameManager.getGameManager().getConfiguration().getSpectatingTeleport()) {
+			uhcPlayer.sendMessage(ChatColor.translateAlternateColorCodes('&',
+					"&d&lSPECTATING: &7" + Lang.COMMAND_SPECTATING_HELP));
+		}
+
 		Player player;
 		try {
 			player = uhcPlayer.getPlayer();player.getEquipment().clear();

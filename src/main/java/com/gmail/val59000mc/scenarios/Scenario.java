@@ -23,7 +23,7 @@ public enum Scenario{
     TRIPLEORES("Triple Ores", UniversalMaterial.REDSTONE_ORE, TripleOresListener.class, "&6Triple Ores&7:", "&7- Ores drop in threes."),
     TEAMINVENTORY("Team Inventory", UniversalMaterial.CHEST, null, "&6Team Inventory&7:", "&7- Each team has an extra inventory that all members from the team can view by using /teaminventory."),
     NOCLEAN("No-Clean", UniversalMaterial.QUARTZ, NoCleanListener.class, "&6NoClean&7:", "&7- Gives you 30 seconds of invincibility after a kill.", "&7- Attacking other players will remove this PvP Protection."),
-    HASTEYBOYS("Hastey Boys", UniversalMaterial.DIAMOND_PICKAXE, HasteyBoysListener.class, "&6HasteyBoys&7:", "&7- Every tool you craft will have Efficiency 3 and Unbreaking 1"),
+    HASTEYBOYS("Hastey Boys", UniversalMaterial.DIAMOND_PICKAXE, HasteyBoysListener.class, "&6HasteyBoys&7:", "&7- Every tool you craft will have Efficiency V and Fortune I"),
     LUCKYLEAVES("Lucky Leaves", UniversalMaterial.OAK_LEAVES, LuckyLeavesListener.class, "&6LuckyLeaves&7:", "&7- Trees have a 0.5% chance of dropping a Golden Apple."),
     BLEEDINGSWEETS("Bleeding Sweets", UniversalMaterial.BOOK, BleedingSweetsListener.class, "&6BleedingSweets&7", "&7- On death a player drops 1 diamond, 5 gold, 1 book, 2 string and 16 arrows"),
     DOUBLEGOLD("Double Gold", UniversalMaterial.GOLD_INGOT, DoubleGoldListener.class, "&6DoubleGold&7:", "&7- The original amount of gold will double when mined."),

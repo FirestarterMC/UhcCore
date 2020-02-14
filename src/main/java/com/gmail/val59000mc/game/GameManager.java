@@ -23,6 +23,7 @@ import com.gmail.val59000mc.threads.*;
 import com.gmail.val59000mc.utils.*;
 import org.bukkit.*;
 import org.bukkit.World.Environment;
+import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 
 import java.io.File;
@@ -284,8 +285,18 @@ public class GameManager {
 			getScenarioManager().countVotes();
 		}
 
-		broadcastInfoMessage(Lang.GAME_STARTING);
-		broadcastInfoMessage(Lang.GAME_PLEASE_WAIT_TELEPORTING);
+		//broadcastInfoMessage(Lang.GAME_STARTING);
+		
+		// Send a title message instead
+		for (Player player : Bukkit.getServer().getOnlinePlayers()) {
+			player.sendTitle(ChatColor.translateAlternateColorCodes('&', "&a&lGet going."),
+				"Have fun, survive, and don't starve.");
+			player.playSound(player.getLocation(), Sound.LEVEL_UP, 1.0f, 1.0f);
+			player.sendMessage(ChatColor.translateAlternateColorCodes('&',
+					"&6&lUHC: &7Use /chat to toggle between global and team chat."));
+		}
+		
+		//broadcastInfoMessage(Lang.GAME_PLEASE_WAIT_TELEPORTING);
 		getPlayersManager().randomTeleportTeams();
 		gameIsEnding = false;
 	}
@@ -397,7 +408,7 @@ public class GameManager {
 			theEnd.setDifficulty(configuration.getGameDifficulty());
 		}
 
-		lobby = new Lobby(new Location(overworld, 0.5, 200, 0.5), Material.GLASS);
+		lobby = new Lobby(new Location(overworld, 0.5, 130, 0.5), Material.BARRIER);
 		lobby.build();
 		lobby.loadLobbyChunks();
 
@@ -432,7 +443,14 @@ public class GameManager {
 			setGameState(GameState.ENDED);
 			pvp = false;
 			gameIsEnding = true;
-			broadcastInfoMessage(Lang.GAME_FINISHED);
+			//broadcastInfoMessage(Lang.GAME_FINISHED);
+			
+			// Send title message
+			for (Player player : Bukkit.getOnlinePlayers()) {
+				player.sendTitle(ChatColor.translateAlternateColorCodes('&', "&d&lIt's over."), "Thank you so much for participating!");
+				player.playSound(player.getLocation(), Sound.NOTE_PLING, 1.0f, 1.0f);
+			}
+			
 			getPlayersManager().playSoundToAll(UniversalSound.ENDERDRAGON_GROWL, 1, 2);
 			getPlayersManager().setAllPlayersEndGame();
 			Bukkit.getScheduler().scheduleSyncDelayedTask(UhcCore.getPlugin(), new StopRestartThread(),20);

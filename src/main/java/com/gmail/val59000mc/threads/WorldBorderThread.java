@@ -30,7 +30,7 @@ public class WorldBorderThread implements Runnable{
 	}
 	
 	private void startMoving(){
-		GameManager.getGameManager().broadcastInfoMessage(Lang.GAME_BORDER_START_SHRINKING);
+		//GameManager.getGameManager().broadcastInfoMessage(Lang.GAME_BORDER_START_SHRINKING);
 		
 		World overworld = Bukkit.getWorld(GameManager.getGameManager().getConfiguration().getOverworldUuid());
 		WorldBorder overworldBorder = overworld.getWorldBorder();

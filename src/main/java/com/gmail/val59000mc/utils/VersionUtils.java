@@ -21,11 +21,12 @@ public abstract class VersionUtils{
             int version = UhcCore.getVersion();
             if (version < 12) {
                 versionUtils = new VersionUtils_1_8();
-            } else if (version == 12){
+            }
+            /*} else if (version == 12){
                 versionUtils = new VersionUtils_1_12();
             }else {
                 versionUtils = new VersionUtils_1_13();
-            }
+            }*/
         }
         return versionUtils;
     }

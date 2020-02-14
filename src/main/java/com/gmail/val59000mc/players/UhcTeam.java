@@ -46,7 +46,7 @@ public class UhcTeam {
 	}
 
 	public String getPrefix() {
-		return prefix + "\u25A0 ";
+		return prefix;
 	}
 
 	public Inventory getTeamInventory() {
@@ -54,7 +54,7 @@ public class UhcTeam {
 	}
 
 	public void sendChatMessageToTeamMembers(String message){
-		sendMessage(ChatColor.GREEN+"[Team] "+message);
+		sendMessage(ChatColor.translateAlternateColorCodes('&', "&d&l[Team]&f " + message));
 	}
 
 	public void sendMessage(String message){
@@ -255,12 +255,12 @@ public class UhcTeam {
 			setReady(!isReadyToStart());
 			for(UhcPlayer teamMember : getMembers()){
 				if(isReadyToStart())
-					teamMember.sendMessage(ChatColor.GOLD+ Lang.TEAM_NOW_READY);
+					teamMember.sendMessage(ChatColor.translateAlternateColorCodes('&', "&d&lTeam: &7Your team is now ready."));
 				else
-					teamMember.sendMessage(ChatColor.GOLD+ Lang.TEAM_NOW_NOT_READY);
+					teamMember.sendMessage(ChatColor.translateAlternateColorCodes('&', "&d&lTeam: &7Your team is no longer ready."));
 			}
 		}else{
-			throw new UhcTeamException(ChatColor.RED+ Lang.TEAM_NOT_LEADER);
+			throw new UhcTeamException(ChatColor.translateAlternateColorCodes('&', "&c&lError: &7You are not the leader of the team."));
 		}
 	}
 

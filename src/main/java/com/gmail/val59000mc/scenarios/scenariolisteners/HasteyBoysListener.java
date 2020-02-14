@@ -18,8 +18,8 @@ public class HasteyBoysListener extends ScenarioListener{
         ItemStack item = e.getCurrentItem();
 
         try {
-            item.addEnchantment(Enchantment.DIG_SPEED,3);
-            item.addEnchantment(Enchantment.DURABILITY,1);
+            item.addEnchantment(Enchantment.DIG_SPEED,5);
+            item.addEnchantment(Enchantment.LOOT_BONUS_BLOCKS,1);
         }catch (IllegalArgumentException ex){
             // Nothing
         }

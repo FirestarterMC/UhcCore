@@ -8,6 +8,10 @@ import com.gmail.val59000mc.players.UhcTeam;
 import com.gmail.val59000mc.utils.TimeUtils;
 import com.gmail.val59000mc.utils.UniversalSound;
 import org.bukkit.Bukkit;
+import org.bukkit.Sound;
+import org.bukkit.entity.Player;
+
+import net.md_5.bungee.api.ChatColor;
 
 import java.util.List;
 
@@ -67,11 +71,26 @@ public class PreStartThread implements Runnable{
 				
 				if(force == true || (pause == false && (remainingTime < 5 || (playersNumber >= minPlayers && readyTeams >= gm.getConfiguration().getMinimalReadyTeamsToStart() && percentageReadyTeams >= gm.getConfiguration().getMinimalReadyTeamsPercentageToStart())))){
 						if(remainingTime == timeBeforeStart+1){
-							gm.broadcastInfoMessage(Lang.GAME_ENOUGH_TEAMS_READY);
-							gm.broadcastInfoMessage(Lang.GAME_STARTING_IN.replace("%time%", ""+ TimeUtils.getFormattedTime(remainingTime)));
-							gm.getPlayersManager().playSoundToAll(UniversalSound.CLICK);
+							//gm.broadcastInfoMessage(Lang.GAME_ENOUGH_TEAMS_READY);
+
+							// Send a title message instead
+							for (Player player : Bukkit.getServer().getOnlinePlayers()) {
+								player.sendTitle(ChatColor.translateAlternateColorCodes('&', "&c&l" + 
+									remainingTime), "");
+								player.playSound(player.getLocation(), Sound.NOTE_PLING, 1.0f, 1.0f);
+							}
+
+							//gm.broadcastInfoMessage(Lang.GAME_STARTING_IN.replace("%time%", ""+ TimeUtils.getFormattedTime(remainingTime)));
+							//gm.getPlayersManager().playSoundToAll(UniversalSound.CLICK);
 						}else if((remainingTime > 0 && remainingTime <= 10) || (remainingTime > 0 && remainingTime%10 == 0)){
-							gm.broadcastInfoMessage(Lang.GAME_STARTING_IN.replace("%time%", ""+remainingTime));
+
+							// Send a title message instead
+							for (Player player : Bukkit.getServer().getOnlinePlayers()) {
+								player.sendTitle(ChatColor.translateAlternateColorCodes('&', "&c&l" + 
+									remainingTime), "");
+								player.playSound(player.getLocation(), Sound.NOTE_PLING, 1.0f, 1.0f);
+							}
+
 							gm.getPlayersManager().playSoundToAll(UniversalSound.CLICK);
 						}
 						

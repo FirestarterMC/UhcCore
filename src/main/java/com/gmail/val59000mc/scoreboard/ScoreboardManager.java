@@ -285,18 +285,10 @@ public class ScoreboardManager {
                 size = 0;
             }
 
-            String borderString = "+" + size + " -" + size;
+            String borderString = "" + size + ", " + size;
 
             int distanceX = size - (int) bukkitPlayer.getLocation().getX();
             int distanceZ = size - (int) bukkitPlayer.getLocation().getZ();
-
-            if (distanceX <= 5 || distanceZ <= 5){
-                borderString = ChatColor.RED + borderString;
-            }else if (distanceX <= 50 || distanceZ <= 50){
-                borderString = ChatColor.YELLOW + borderString;
-            }else {
-                borderString = ChatColor.GREEN + borderString;
-            }
 
             returnString = returnString.replace("%border",borderString);
         }

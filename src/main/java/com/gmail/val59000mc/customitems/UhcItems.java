@@ -1,5 +1,11 @@
 package com.gmail.val59000mc.customitems;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import java.util.UUID;
+
 import com.gmail.val59000mc.configuration.MainConfiguration;
 import com.gmail.val59000mc.exceptions.UhcPlayerDoesntExistException;
 import com.gmail.val59000mc.game.GameManager;
@@ -9,6 +15,7 @@ import com.gmail.val59000mc.players.UhcTeam;
 import com.gmail.val59000mc.utils.CompareUtils;
 import com.gmail.val59000mc.utils.UniversalMaterial;
 import com.gmail.val59000mc.utils.VersionUtils;
+
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -20,17 +27,15 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import java.util.*;
-
 public class UhcItems {
 	
 	public static void giveLobbyItemTo(Player player){
 		MainConfiguration cfg = GameManager.getGameManager().getConfiguration();
 		if (cfg.getMaxPlayersPerTeam() > 1 || !cfg.getTeamAlwaysReady()) {
-			ItemStack item = new ItemStack(Material.IRON_SWORD);
+			ItemStack item = new ItemStack(Material.BOOK);
 			ItemMeta meta = item.getItemMeta();
-			meta.setDisplayName(Lang.ITEMS_SWORD);
-			meta.setLore(Arrays.asList("Lobby"));
+			meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', "&d&lChoose Teams"));
+			meta.setLore(Arrays.asList(ChatColor.GRAY + "Right-click to view", ChatColor.GRAY + "and join teams."));
 			item.setItemMeta(meta);
 			player.getInventory().addItem(item);
 		}
@@ -50,7 +55,8 @@ public class UhcItems {
 	public static void giveScenariosItemTo(Player player){
 		ItemStack paper = new ItemStack(Material.PAPER);
 		ItemMeta meta = paper.getItemMeta();
-		meta.setDisplayName(Lang.SCENARIO_GLOBAL_ITEM_HOTBAR);
+		meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', "&6&lView Scenarios"));
+		meta.setLore(Arrays.asList(ChatColor.GRAY + "View currently active", ChatColor.GRAY + "game scenarios."));
 		paper.setItemMeta(meta);
 		player.getInventory().addItem(paper);
 	}
@@ -58,8 +64,8 @@ public class UhcItems {
 	public static boolean isLobbyItem(ItemStack item){
 		return (
 				item != null 
-				&& item.getType().equals(Material.IRON_SWORD)
-				&& item.getItemMeta().getLore().contains("Lobby")
+				&& item.getType().equals(Material.BOOK)
+				&& item.getItemMeta().getDisplayName().contains("Choose Teams")
         );
 	}
 
@@ -69,7 +75,7 @@ public class UhcItems {
 						item.getType().equals(Material.PAPER) &&
 						item.hasItemMeta() &&
 						item.getItemMeta().hasDisplayName() &&
-						item.getItemMeta().getDisplayName().equals(Lang.SCENARIO_GLOBAL_ITEM_HOTBAR)
+						item.getItemMeta().getDisplayName().contains("View Scenarios")
 		);
 	}
 
@@ -84,9 +90,9 @@ public class UhcItems {
 	}
 	
 	public static void openTeamInventory(Player player){
-		int maxSlots = 6*9;
-		Inventory inv = Bukkit.createInventory(null, maxSlots, ChatColor.GREEN+Lang.DISPLAY_MESSAGE_PREFIX+" "+ChatColor.DARK_GREEN+Lang.TEAM_INVENTORY);
-		int slot = 0;
+		int maxSlots = 5*9;
+		Inventory inv = Bukkit.createInventory(null, maxSlots, Lang.TEAM_INVENTORY);
+		int slot = 9;
 		GameManager gm = GameManager.getGameManager();
 		List<UhcTeam> teams = gm.getPlayersManager().listUhcTeams();
 		for(UhcTeam team : teams){
@@ -97,6 +103,13 @@ public class UhcItems {
 			}
 		}
 		
+		int[] glassLocations = {0, 1, 2, 3, 4, 5, 6, 7, 8, 36, 37, 38, 39, 41, 42, 43, 44};
+		ItemStack glass = new ItemStack(Material.STAINED_GLASS_PANE, 1, (short) 7);
+
+		for (int i = 0; i < glassLocations.length; i++) {
+			inv.setItem(glassLocations[i], glass);
+		}
+
 		// Leave team item
 		if(!gm.getConfiguration().getPreventPlayerFromLeavingTeam()){
 			ItemStack leaveTeamItem = new ItemStack(Material.BARRIER);
@@ -116,14 +129,14 @@ public class UhcItems {
 
 
 				// Red Wool
-				ItemStack readyTeamItem = UniversalMaterial.RED_WOOL.getStack();
+				ItemStack readyTeamItem = new ItemStack(Material.ENDER_PEARL, 1);
 
-				String readyState = ChatColor.RED+Lang.TEAM_NOT_READY;
+				String readyState = ChatColor.RED + Lang.TEAM_NOT_READY;
 				
 				if(uhcPlayer.getTeam().isReadyToStart()){
 					// Lime Wool
-					readyTeamItem = UniversalMaterial.LIME_WOOL.getStack();
-					readyState = ChatColor.GREEN+Lang.TEAM_READY;
+					readyTeamItem = new ItemStack(Material.EYE_OF_ENDER, 1);
+					readyState = ChatColor.GREEN + Lang.TEAM_READY;
 				}
 
 				ItemMeta imReady = readyTeamItem.getItemMeta();
@@ -132,7 +145,7 @@ public class UhcItems {
 				readyLore.add(ChatColor.GRAY+Lang.TEAM_READY_TOGGLE);
 				imReady.setLore(readyLore);
 				readyTeamItem.setItemMeta(imReady);
-				inv.setItem(maxSlots-2, readyTeamItem);
+				inv.setItem(40, readyTeamItem);
 			}
 			
 			player.openInventory(inv);
@@ -153,20 +166,19 @@ public class UhcItems {
 		
 		// Setting up lore with team members
 		List<String> teamLore = new ArrayList<String>();
-		teamLore.add(ChatColor.GREEN+"Members");
+		teamLore.add(ChatColor.YELLOW + "Members:");
 		for(String teamMember : membersNames){
-			teamLore.add(ChatColor.WHITE+teamMember);
+			teamLore.add(ChatColor.GRAY + teamMember);
 		}
 		
 		// Ready State
 		if(team.isReadyToStart())
-			teamLore.add(ChatColor.GREEN+"--- "+Lang.TEAM_READY+" ---");
+			teamLore.add(ChatColor.DARK_GRAY+"- "+ ChatColor.GREEN + Lang.TEAM_READY);
 		else
-			teamLore.add(ChatColor.RED+"--- "+Lang.TEAM_NOT_READY+" ---");
+			teamLore.add(ChatColor.DARK_GRAY+"- "+ ChatColor.RED + Lang.TEAM_NOT_READY);
 		
 		im.setLore(teamLore);
-
-		im.setDisplayName(leaderName);
+		im.setDisplayName(ChatColor.GRAY + leaderName + "'s Team");
 		item.setItemMeta(im);
 		return item;
 	}
@@ -174,7 +186,7 @@ public class UhcItems {
 	public static boolean isLobbyTeamItem(ItemStack item){
 		if(item != null && item.getType() == UniversalMaterial.PLAYER_HEAD.getType()){
 			List<String> lore = item.getItemMeta().getLore();
-			return CompareUtils.stringListContains(lore, ChatColor.GREEN+"Members") || CompareUtils.stringListContains(lore, Lang.TEAM_REQUEST_HEAD);
+			return CompareUtils.stringListContains(lore, ChatColor.YELLOW+"Members:") || CompareUtils.stringListContains(lore, Lang.TEAM_REQUEST_HEAD);
 		}
 		return false;
 	}
@@ -193,7 +205,7 @@ public class UhcItems {
 	public static boolean isLobbyReadyTeamItem(ItemStack item) {
 		return (
 				item != null 
-				&& (item.getType() == UniversalMaterial.RED_WOOL.getType() || item.getType() == UniversalMaterial.LIME_WOOL.getType())
+				&& (item.getType().equals(Material.ENDER_PEARL) || item.getType().equals(Material.EYE_OF_ENDER))
 				&& item.hasItemMeta()
 				&& (item.getItemMeta().getDisplayName().equals(ChatColor.RED+Lang.TEAM_NOT_READY)
 						|| item.getItemMeta().getDisplayName().equals(ChatColor.GREEN+Lang.TEAM_READY))
@@ -270,13 +282,13 @@ public class UhcItems {
 	}
 	
 	public static void giveCraftBookTo(Player player) {
-		if(CraftsManager.isAtLeastOneCraft()){
+		/*if(CraftsManager.isAtLeastOneCraft()){
 			ItemStack book = new ItemStack(Material.ENCHANTED_BOOK, 1);
 			ItemMeta im = book.getItemMeta();
 			im.setDisplayName(ChatColor.LIGHT_PURPLE+Lang.ITEMS_CRAFT_BOOK);
 			book.setItemMeta(im);
 			player.getInventory().addItem(book);
-		}
+		}*/ // Craft book is dumb
 	}
 	
 	public static boolean isCraftBookItem(ItemStack item){

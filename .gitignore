@@ -8,6 +8,11 @@ target/
  
 *.class
  
+/gradle/
+/.vscode/
+/.idea/
+/.gradle/
+
 # Package Files #
 *.jar
 *.war

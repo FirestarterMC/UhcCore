@@ -112,7 +112,7 @@ public class UhcCommandExecutor implements CommandExecutor{
 
 			case "force":
 				String forceState = PreStartThread.toggleForce();
-				sender.sendMessage("The starting thread state is now : "+forceState);
+				sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&6&lUHC: &7Starting the UHC event."));
 				return true;
 		}
 
